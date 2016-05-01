@@ -1,6 +1,6 @@
 # xoroshiro
-[![Build Status](https://travis-ci.org/codahale/xoroshiro.svg)](https://travis-ci.org/codahale/xoroshiro)
-[![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/codahale/xoroshiro/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/codahale/xoroshiro.rs.svg)](https://travis-ci.org/codahale/xoroshiro.rs)
+[![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/codahale/xoroshiro.rs/blob/master/LICENSE)
 
 A Rust implementation of the [Xoroshiro128+](http://xoroshiro.di.unimi.it) PRNG.
 
