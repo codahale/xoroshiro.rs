@@ -21,7 +21,11 @@ impl Xoroshiro128Rng {
     ///
     /// N.B.: The seed is produced with `OsRng` which can be slow and may fail.
     pub fn new() -> io::Result<Xoroshiro128Rng> {
-        OsRng::new().map(|mut r| Xoroshiro128Rng { state: r.gen() })
+        OsRng::new().map(|mut r| {
+            let mut rng = Xoroshiro128Rng { state: r.gen() };
+            rng.next_u64();
+            rng
+        })
     }
 
     /// Returns a new `Xoroshiro128Rng` instance with a constant seed.
