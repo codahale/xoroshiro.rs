@@ -39,8 +39,8 @@ impl Rng for Xoroshiro128Rng {
         let result = s0.wrapping_mul(s1);
 
         s1 ^= s0;
-        self.state[0] = rotl(s0, 55) ^ s1 ^ (s1 << 14);
-        self.state[1] = rotl(s1, 36);
+        self.state[0] = s0.rotate_left(55) ^ s1 ^ (s1 << 14);
+        self.state[1] = s1.rotate_left(36);
 
         result
     }
@@ -54,11 +54,6 @@ impl SeedableRng<[u64; 2]> for Xoroshiro128Rng {
     fn from_seed(seed: [u64; 2]) -> Xoroshiro128Rng {
         Xoroshiro128Rng { state: seed }
     }
-}
-
-#[inline(always)]
-fn rotl(x: u64, k: u8) -> u64 {
-    (x << k) | (x >> (64 - k))
 }
 
 #[cfg(test)]
