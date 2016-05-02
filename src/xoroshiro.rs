@@ -1,4 +1,5 @@
-use rand::{Rng, SeedableRng};
+use std::io;
+use rand::{OsRng, Rng, SeedableRng};
 
 /// An implementation of the [Xoroshiro128+](http://xoroshiro.di.unimi.it) random number generator:
 ///
@@ -16,7 +17,14 @@ pub struct Xoroshiro128Rng {
 }
 
 impl Xoroshiro128Rng {
-    /// Returns a new `Xoroshiro128Rng` instance which is not seeded.
+    /// Returns a new `Xoroshiro128Rng` instance with a random seed.
+    ///
+    /// N.B.: The seed is produced with `OsRng` which can be slow and may fail.
+    pub fn new() -> io::Result<Xoroshiro128Rng> {
+        OsRng::new().map(|mut r| Xoroshiro128Rng {state: r.gen()})
+    }
+
+    /// Returns a new `Xoroshiro128Rng` instance with a constant seed.
     ///
     /// The initial values of this RNG are constants, so all generators created by this function
     /// will yield the same stream of random numbers. It is highly recommended that this is created
@@ -82,6 +90,12 @@ mod test {
     use super::*;
 
     use rand::{Rng, SeedableRng};
+
+    #[test]
+    fn new() {
+        let rng = Xoroshiro128Rng::new();
+        assert!(rng.map(|mut r| r.gen::<u8>()).is_ok());
+    }
 
     #[test]
     fn output() {
