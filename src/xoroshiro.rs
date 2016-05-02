@@ -65,7 +65,7 @@ impl Rng for Xoroshiro128Rng {
     fn next_u64(&mut self) -> u64 {
         let s0 = self.state[0];
         let mut s1 = self.state[1];
-        let result = s0.wrapping_mul(s1);
+        let result = s0.wrapping_add(s1);
 
         s1 ^= s0;
         self.state[0] = s0.rotate_left(55) ^ s1 ^ (s1 << 14);
@@ -105,7 +105,7 @@ mod test {
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
 
         assert_eq!(v,
-                   vec![4018128778, 2230751931, 3794516864, 1640624936, 1749030944, 1428004884]);
+                   vec![3143631767, 3860126924, 1781643561, 1911529541, 113917100, 2025972731]);
     }
 
     #[test]
@@ -123,6 +123,6 @@ mod test {
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
 
         assert_eq!(v,
-                   vec![2655684831, 3337506272, 2367536728, 2880803830, 3901765714, 4101341870]);
+                   vec![3564949728, 3479480372, 1003893697, 3066975437, 1909106551, 3084299971]);
     }
 }
