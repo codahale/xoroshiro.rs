@@ -25,6 +25,27 @@ impl Xoroshiro128Rng {
         // Hand-crafted, artisanally-produced, locally-curated random numbers.
         Xoroshiro128Rng::from_seed([0xaeecf86f7878dd75, 0x1cd153642e72622])
     }
+
+    /// Jumps ahead 2^64 outputs. It is equivalent to 2^64 calls to next(); it can be used to
+    /// generate 2^64 non-overlapping subsequences for parallel computations.
+    pub fn jump(&mut self) {
+        let jump: [u64; 2] = [0xbeac0467eba5facb, 0xd86b048b86aa9922];
+        let mut s0 = 0;
+        let mut s1 = 0;
+
+        for i in 0..2 {
+            for b in 0..64 {
+                if jump[i] & (1 << b) != 0 {
+                    s0 ^= self.state[0];
+                    s1 ^= self.state[1];
+                }
+                self.next_u64();
+            }
+        }
+
+        self.state[0] = s0;
+        self.state[1] = s1;
+    }
 }
 
 impl Rng for Xoroshiro128Rng {
@@ -77,5 +98,16 @@ mod test {
     fn overflow() {
         let mut rng = Xoroshiro128Rng::from_seed([!0, 54]);
         rng.next_u32();
+    }
+
+    #[test]
+    fn jump() {
+        let mut rng = Xoroshiro128Rng::new_unseeded();
+        rng.jump();
+
+        let v: Vec<u32> = rng.gen_iter().take(6).collect();
+
+        assert_eq!(v,
+                   vec![2655684831, 3337506272, 2367536728, 2880803830, 3901765714, 4101341870]);
     }
 }
