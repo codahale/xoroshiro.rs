@@ -22,7 +22,8 @@ impl Xoroshiro128Rng {
     /// will yield the same stream of random numbers. It is highly recommended that this is created
     /// through `SeedableRng` instead of this function.
     pub fn new_unseeded() -> Xoroshiro128Rng {
-        Xoroshiro128Rng::from_seed([0xbeac0467eba5facb, 0xd86b048b86aa9922])
+        // Hand-crafted, artisanally-produced, locally-curated random numbers.
+        Xoroshiro128Rng::from_seed([0xaeecf86f7878dd75, 0x1cd153642e72622])
     }
 }
 
@@ -69,7 +70,7 @@ mod test {
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
 
         assert_eq!(v,
-                   vec![1270653430, 2594803064, 2454036012, 1263375617, 4065441056, 3165064544]);
+                   vec![4018128778, 2230751931, 3794516864, 1640624936, 1749030944, 1428004884]);
     }
 
     #[test]
