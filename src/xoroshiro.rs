@@ -22,8 +22,7 @@ impl Xoroshiro128Rng {
     /// will yield the same stream of random numbers. It is highly recommended that this is created
     /// through `SeedableRng` instead of this function.
     pub fn new_unseeded() -> Xoroshiro128Rng {
-        // Hand-crafted, artisanally-produced, locally-curated random numbers.
-        Xoroshiro128Rng::from_seed([0xaeecf86f7878dd75, 0x1cd153642e72622])
+        Xoroshiro128Rng::from_seed([0, 0])
     }
 
     /// Jumps ahead 2^64 outputs. It is equivalent to 2^64 calls to next(); it can be used to
@@ -87,6 +86,8 @@ mod test {
     #[test]
     fn output() {
         let mut rng = Xoroshiro128Rng::new_unseeded();
+        // Hand-crafted, artisanally-produced, locally-curated random numbers.
+        rng.reseed([0xaeecf86f7878dd75, 0x1cd153642e72622]);
 
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
 
@@ -103,6 +104,8 @@ mod test {
     #[test]
     fn jump() {
         let mut rng = Xoroshiro128Rng::new_unseeded();
+        // Hand-crafted, artisanally-produced, locally-curated random numbers.
+        rng.reseed([0xaeecf86f7878dd75, 0x1cd153642e72622]);
         rng.jump();
 
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
