@@ -7,10 +7,10 @@ use rand::{OsRng, Rng, SeedableRng};
 /// > uses a carefully handcrafted shift/rotate-based linear transformation designed in
 /// > collaboration with David Blackman. The result is a significant improvement in speed (well
 /// > below a nanosecond per integer) and a significant improvement in statistical quality, as
-/// > detected by the long-range tests of PractRand. xoroshiro128+ is our current suggestion for
+/// > detected by the long-range tests of `PractRand`. xoroshiro128+ is our current suggestion for
 /// > replacing low-quality generators commonly found in programming languages.
 ///
-/// It produces better results than XorShift and is faster.
+/// It produces better results than `XorShiftRng` and is faster.
 #[derive(Clone, Debug)]
 pub struct Xoroshiro128Rng {
     state: [u64; 2],
@@ -62,6 +62,7 @@ impl Xoroshiro128Rng {
     }
 }
 
+#[allow(inline_always)]
 impl Rng for Xoroshiro128Rng {
     #[inline(always)]
     fn next_u32(&mut self) -> u32 {

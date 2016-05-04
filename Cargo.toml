@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Coda Hale <coda.hale@gmail.com>"]
 
 [dependencies]
+clippy = "*"
 rand = "*"
 
 [dev-dependencies.criterion]
