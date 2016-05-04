@@ -5,3 +5,6 @@ authors = ["Coda Hale <coda.hale@gmail.com>"]
 
 [dependencies]
 rand = "*"
+
+[dev-dependencies.criterion]
+git = "https://github.com/japaric/criterion.rs.git"
