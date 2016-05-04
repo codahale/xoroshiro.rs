@@ -13,9 +13,6 @@
 //!
 //! ```
 
-#![feature(plugin)]
-#![plugin(clippy)]
-
 extern crate rand;
 
 mod xoroshiro;

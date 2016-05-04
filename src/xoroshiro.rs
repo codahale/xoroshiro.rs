@@ -62,7 +62,6 @@ impl Xoroshiro128Rng {
     }
 }
 
-#[allow(inline_always)]
 impl Rng for Xoroshiro128Rng {
     #[inline(always)]
     fn next_u32(&mut self) -> u32 {

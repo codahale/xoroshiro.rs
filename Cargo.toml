@@ -3,9 +3,9 @@ name = "xoroshiro"
 version = "0.1.0"
 authors = ["Coda Hale <coda.hale@gmail.com>"]
 
-[dependencies]
-clippy = "*"
-rand = "*"
+[features]
+benchmarks = ["criterion"]
 
-[dev-dependencies.criterion]
-git = "https://github.com/japaric/criterion.rs.git"
+[dependencies]
+rand = "*"
+criterion = {git = "https://github.com/japaric/criterion.rs.git", optional = true}
