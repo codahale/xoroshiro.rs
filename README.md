@@ -9,4 +9,4 @@ provides an excellent combination of speed and unpredictability.
 
 It produces high-quality output than Rust's default `XorShiftRng`, and is faster:
 
-![results](https://github.com/codahale/xoroshiro.rs/blob/master/README.md)
+![results](https://raw.githubusercontent.com/codahale/xoroshiro.rs/master/results.png)
