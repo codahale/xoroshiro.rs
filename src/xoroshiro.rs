@@ -14,6 +14,7 @@ use rand::{OsRng, Rng, SeedableRng};
 #[derive(Clone, Debug)]
 pub struct Xoroshiro128Rng {
     state: [u64; 2],
+    last: State,
 }
 
 impl Xoroshiro128Rng {
@@ -65,7 +66,19 @@ impl Xoroshiro128Rng {
 impl Rng for Xoroshiro128Rng {
     #[inline(always)]
     fn next_u32(&mut self) -> u32 {
-        self.next_u64() as u32
+        match self.last {
+            State::Top(v) => {
+                self.last = State::Bottom(v >> 32);
+                return v as u32;
+            }
+            State::Bottom(v) => {
+                return v as u32;
+            }
+            State::None => {
+                self.last = State::Top(self.next_u64());
+                return self.next_u32();
+            }
+        }
     }
 
     #[inline(always)]
@@ -88,7 +101,10 @@ impl SeedableRng<[u64; 2]> for Xoroshiro128Rng {
     }
 
     fn from_seed(seed: [u64; 2]) -> Xoroshiro128Rng {
-        Xoroshiro128Rng { state: seed }
+        Xoroshiro128Rng {
+            state: seed,
+            last: State::None,
+        }
     }
 }
 
@@ -112,7 +128,7 @@ mod test {
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
 
         assert_eq!(v,
-                   vec![3143631767, 3860126924, 1781643561, 1911529541, 113917100, 2025972731]);
+                   vec![3143631767, 2964983205, 2964983205, 2964983205, 2964983205, 2964983205]);
     }
 
     #[test]
@@ -130,6 +146,13 @@ mod test {
         let v: Vec<u32> = rng.gen_iter().take(6).collect();
 
         assert_eq!(v,
-                   vec![3564949728, 3479480372, 1003893697, 3066975437, 1909106551, 3084299971]);
+                   vec![3564949728, 2071064784, 2071064784, 2071064784, 2071064784, 2071064784]);
     }
+}
+
+#[derive(Clone, Debug)]
+enum State {
+    None,
+    Top(u64),
+    Bottom(u64)
 }
