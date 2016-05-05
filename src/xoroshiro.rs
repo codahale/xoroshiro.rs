@@ -154,5 +154,5 @@ mod test {
 enum State {
     None,
     Top(u64),
-    Bottom(u64)
+    Bottom(u64),
 }

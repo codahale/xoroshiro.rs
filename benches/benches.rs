@@ -22,6 +22,5 @@ fn comparison() {
     let xoroshiro = Fun::new("Xoroshiro128Rng", bench_xoroshiro);
     let rngs = vec![xorshift, xoroshiro];
 
-    Criterion::default()
-        .bench_functions("Rng", rngs, &1);
+    Criterion::default().bench_functions("Rng", rngs, &1);
 }
