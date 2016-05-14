@@ -88,9 +88,7 @@ impl SeedableRng<[u64; 2]> for Xoroshiro128Rng {
     }
 
     fn from_seed(seed: [u64; 2]) -> Xoroshiro128Rng {
-        Xoroshiro128Rng {
-            state: seed,
-        }
+        Xoroshiro128Rng { state: seed }
     }
 }
 
