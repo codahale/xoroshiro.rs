@@ -2,7 +2,7 @@ extern crate criterion;
 extern crate rand;
 extern crate xoroshiro;
 
-use criterion::{Bencher, Fun, Criterion};
+use criterion::{Bencher, Criterion, Fun};
 use rand::{Rng, SeedableRng, XorShiftRng};
 use xoroshiro::Xoroshiro128Rng;
 
