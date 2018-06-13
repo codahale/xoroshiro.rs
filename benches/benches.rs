@@ -1,32 +1,33 @@
+#[macro_use]
 extern crate criterion;
 extern crate rand;
 extern crate xoroshiro;
 
-use criterion::{Bencher, Criterion, Fun};
+use criterion::{Criterion, Fun};
 use rand::{Rng, SeedableRng, XorShiftRng};
 use xoroshiro::Xoroshiro128Rng;
 
-fn bench_xorshift_u32(b: &mut Bencher, _: &u32) {
-    let mut rng = XorShiftRng::from_seed([100, 200, 300, 400]);
-    b.iter(|| rng.next_u32());
+fn bench_prng(c: &mut Criterion) {
+    let xorshift_u32 = Fun::new("XorShift", |b, _| {
+        let mut rng = XorShiftRng::from_seed([100, 200, 300, 400]);
+        return b.iter(|| rng.next_u32());
+    });
+    let xoroshiro128_u32 = Fun::new("Xoroshiro128", |b, _| {
+        let mut rng = Xoroshiro128Rng::from_seed([100, 200]);
+        return b.iter(|| rng.next_u32());
+    });
+    c.bench_functions("next_u32", vec![xorshift_u32, xoroshiro128_u32], 0);
+
+    let xorshift_u64 = Fun::new("XorShift", |b, _| {
+        let mut rng = XorShiftRng::from_seed([100, 200, 300, 400]);
+        return b.iter(|| rng.next_u64());
+    });
+    let xoroshiro128_u64 = Fun::new("Xoroshiro128", |b, _| {
+        let mut rng = Xoroshiro128Rng::from_seed([100, 200]);
+        return b.iter(|| rng.next_u64());
+    });
+    c.bench_functions("next_u64", vec![xorshift_u64, xoroshiro128_u64], 0);
 }
 
-fn bench_xorshift_u64(b: &mut Bencher, _: &u32) {
-    let mut rng = XorShiftRng::from_seed([100, 200, 300, 400]);
-    b.iter(|| rng.next_u64());
-}
-
-fn bench_xoroshiro(b: &mut Bencher, _: &u32) {
-    let mut rng = Xoroshiro128Rng::from_seed([100, 200]);
-    b.iter(|| rng.next_u32());
-}
-
-#[test]
-fn comparison() {
-    let xorshift_u32 = Fun::new("XorShiftRng-u32", bench_xorshift_u32);
-    let xorshift_u64 = Fun::new("XorShiftRng-u64", bench_xorshift_u64);
-    let xoroshiro = Fun::new("Xoroshiro128Rng-u64", bench_xoroshiro);
-    let rngs = vec![xorshift_u32, xorshift_u64, xoroshiro];
-
-    Criterion::default().bench_functions("Rng", rngs, &1);
-}
+criterion_group!(benches, bench_prng);
+criterion_main!(benches);

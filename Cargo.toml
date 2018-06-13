@@ -3,9 +3,12 @@ name = "xoroshiro"
 version = "0.1.0"
 authors = ["Coda Hale <coda.hale@gmail.com>"]
 
-[features]
-benchmarks = ["criterion"]
-
 [dependencies]
 rand = "*"
-criterion = {git = "https://github.com/japaric/criterion.rs.git", optional = true}
+
+[dev-dependencies]
+criterion = "0.2"
+
+[[bench]]
+name = "benches"
+harness = false
